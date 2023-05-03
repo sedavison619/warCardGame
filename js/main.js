@@ -22,46 +22,20 @@ function drawWar(cardOne, cardTwo){
 
         if (data.cards[0].value > data.cards[1].value){
           fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/playerOne/add/?cards=${cardOne},${cardTwo}`)
-              .then(res => res.json()) // parse response as JSON
-              .then(pileData => {
-                console.log(pileData)
-            })
-            .catch(err => {
-              console.log(`error ${err}`)
-            }); 
+              
           for (let i = 0; i < 8; i++){
             fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/playerOne/add/?cards=${data.cards[i].code}`)
-              .then(res => res.json()) // parse response as JSON
-              .then(pileData => {
-                console.log(pileData)
-            })
-            .catch(err => {
-              console.log(`error ${err}`)
-            }); 
           }
         }
         else if (data.cards[0].value < data.cards[1].value){
           fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/playerTwo/add/?cards=${cardOne},${cardTwo}`)
-              .then(res => res.json()) // parse response as JSON
-              .then(pileData => {
-                console.log(pileData)
-            })
-            .catch(err => {
-              console.log(`error ${err}`)
-            }); 
           for (let i = 0; i < 8; i++){
             fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/playerTwo/add/?cards=${data.cards[i].code}`)
-              .then(res => res.json()) // parse response as JSON
-              .then(pileData => {
-                console.log(pileData)
-            })
-            .catch(err => {
-              console.log(`error ${err}`)
-            }); 
           }
         }
         else {
-          drawWar()
+          //drawWar()
+          return 0
         }
       })
       .catch(err => {
@@ -74,7 +48,6 @@ function drawTwo(){
   fetch(url)
       .then(res => res.json()) // parse response as JSON
       .then(data => {
-        console.log(data)
         document.querySelector('#playerOne').src = data.cards[0].image
         document.querySelector('#playerTwo').src = data.cards[1].image
         document.querySelector('#playerOneWarTwo').src = ''
@@ -85,31 +58,32 @@ function drawTwo(){
         document.querySelector('#playerTwoWarFour').src = ''
 
         if (+data.cards[0].value > +data.cards[1].value){
-          for (let i = 0; i < 2; i++){
-            fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/playerOne/add/?cards=${data.cards[i].code}`)
-              .then(res => res.json()) // parse response as JSON
-              .then(pileData => {
-                console.log(pileData)
+          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/sedplayerOne/add/?cards=${data.cards[0].code},${data.cards[1].code}`)
+          
+          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/sedplayerOne/list/`)
+            .then(res => res.json()) // parse response as JSON
+            .then(pileData => {
+              console.log(pileData)
             })
             .catch(err => {
               console.log(`error ${err}`)
-            }); 
-          }
+            });
         }
         else if (+data.cards[0].value < +data.cards[1].value){
-          for (let i = 0; i < 2; i++){
-            fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/playerTwo/add/?cards=${data.cards[i].code}`)
-              .then(res => res.json()) // parse response as JSON
-              .then(pileData => {
-                console.log(pileData)
+          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/sedplayerTwo/add/?cards=${data.cards[0].code},${data.cards[1].code}`)
+          
+          fetch(`https://deckofcardsapi.com/api/deck/${deckId}/pile/sedplayerTwo/list/`)
+            .then(res => res.json()) // parse response as JSON
+            .then(pileData => {
+              console.log(pileData)
             })
             .catch(err => {
               console.log(`error ${err}`)
-            }); 
-          }
+            });
         }
         else {
-          drawWar(data.cards[0].code, data.cards[1].code)
+          //drawWar(data.cards[0].code, data.cards[1].code)
+          return 0
         }
       })
       .catch(err => {
@@ -119,7 +93,14 @@ function drawTwo(){
 function newGame(){
   const returnCards = `https://deckofcardsapi.com/api/deck/${deckId}/return/`
   const shuffle = `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`
-
+  document.querySelector('#playerOne').src = ''
+  document.querySelector('#playerTwo').src = ''
+  document.querySelector('#playerOneWarTwo').src = ''
+  document.querySelector('#playerOneWarThree').src = ''
+  document.querySelector('#playerOneWarFour').src = ''
+  document.querySelector('#playerTwoWarTwo').src = ''
+  document.querySelector('#playerTwoWarThree').src = ''
+  document.querySelector('#playerTwoWarFour').src = ''
   fetch(returnCards)
       .then(res => res.json()) // parse response as JSON
       .then(data => {
